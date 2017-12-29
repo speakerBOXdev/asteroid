@@ -17,3 +17,8 @@ var fakeLog = {
   warn: function() {},
   error: function() {}
 }
+
+var fakeGameItem = {
+  draw: function() {},
+  move: function() {}
+}

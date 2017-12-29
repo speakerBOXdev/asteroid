@@ -1,4 +1,4 @@
-var game = function(gameLogger, gameContext, maxXPosition, maxYPosition, minXPosition, minYPosition) {
+var game = function(gameLogger, gameContext, maxXPosition, maxYPosition, minXPosition, minYPosition, rate) {
   if (!gameLogger)
     throw "Parameter: 'gameLogger' is undefined.";
   if (!gameContext)
@@ -12,6 +12,8 @@ var game = function(gameLogger, gameContext, maxXPosition, maxYPosition, minXPos
     minXPosition = 0;
   if (!minYPosition)
     minYPosition = 0;
+  if (!rate)
+    rate = 30;
 
   var logger = gameLogger,
     context = gameContext,
@@ -22,7 +24,7 @@ var game = function(gameLogger, gameContext, maxXPosition, maxYPosition, minXPos
     gameHud,
     gameInterval,
     maxRepeat = -50, // Debugging only
-    refreshRate = 30,
+    refreshRate = rate,
     items = [];
 
   /* Style */
@@ -35,9 +37,10 @@ var game = function(gameLogger, gameContext, maxXPosition, maxYPosition, minXPos
   };
 
   function run() {
+
     if (!gameInterval) {
       try {
-        gameInterval = window.setInterval(mainLoop, refreshRate);
+        gameInterval = setInterval(mainLoop, refreshRate);
       } catch (err) {
         logger.warn("Could not start. " + err.toString());
         pause();
