@@ -1,4 +1,4 @@
-/// <reference path="js/astroid.js" />
+/// <reference path="js/asteroid.js" />
 
 var context = fakeContext;
 var fakeLog = {
@@ -15,36 +15,36 @@ var undertest,
   maxX = 100,
   maxY = 100;
 
-QUnit.module("astroid");
+QUnit.module("asteroid");
 
 
 QUnit.test("init", function(assert) {
   var spyContextFillRect = sinon.spy(context, "fillRect");
 
-  undertest = astroid(fakeLog, context, maxX, maxY, minX, minY);
+  undertest = asteroid(fakeLog, context, maxX, maxY, minX, minY);
   assert.ok(undertest, "Object initialized");
   //assert.equal(spyContextFillRect.withArgs(minX, minY, maxX, maxY).callCount, 5, "fillRect background 5x");
   context.fillRect.restore();
 });
 
 QUnit.test("init no logger", function (assert) {
-  assert.throws(function () { astroid(); },
+  assert.throws(function () { asteroid(); },
       function (err) {
-         return err.toString() === "Parameter: 'astroidLogger' is undefined.";
+         return err.toString() === "Parameter: 'asteroidLogger' is undefined.";
        },
       'Error thrown');
 });
 
 QUnit.test("init no context", function (assert) {
-  assert.throws(function () { astroid(fakeLog); },
+  assert.throws(function () { asteroid(fakeLog); },
       function (err) {
-         return err.toString() === "Parameter: 'astroidContext' is undefined.";
+         return err.toString() === "Parameter: 'asteroidContext' is undefined.";
        },
       'Error thrown');
 });
 
 QUnit.test("init no maxX", function (assert) {
-  assert.throws(function () { astroid(fakeLog, context); },
+  assert.throws(function () { asteroid(fakeLog, context); },
       function (err) {
          return err.toString() === "Parameter: 'maxXPosition' is undefined.";
        },
@@ -52,7 +52,7 @@ QUnit.test("init no maxX", function (assert) {
 });
 
 QUnit.test("init no maxY", function (assert) {
-  assert.throws(function () { astroid(fakeLog, context, maxX); },
+  assert.throws(function () { asteroid(fakeLog, context, maxX); },
       function (err) {
          return err.toString() === "Parameter: 'maxYPosition' is undefined.";
        },

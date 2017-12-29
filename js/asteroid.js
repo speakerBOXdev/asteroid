@@ -1,8 +1,8 @@
-var astroid = function(astroidLogger, astroidContext, maxXPosition, maxYPosition, minXPosition, minYPosition) {
-  if (!astroidLogger)
-    throw "Parameter: 'astroidLogger' is undefined.";
-  if (!astroidContext)
-    throw "Parameter: 'astroidContext' is undefined."
+var asteroid = function(asteroidLogger, asteroidContext, maxXPosition, maxYPosition, minXPosition, minYPosition) {
+  if (!asteroidLogger)
+    throw "Parameter: 'asteroidLogger' is undefined.";
+  if (!asteroidContext)
+    throw "Parameter: 'asteroidContext' is undefined."
   if (!maxXPosition)
     throw "Parameter: 'maxXPosition' is undefined.";
   if (!maxYPosition)
@@ -13,13 +13,13 @@ var astroid = function(astroidLogger, astroidContext, maxXPosition, maxYPosition
   if (!minYPosition)
     minYPosition = 0;
 
-  var logger = astroidLogger,
-    context = astroidContext,
+  var logger = asteroidLogger,
+    context = asteroidContext,
     xmin = minXPosition,
     ymin = minYPosition,
     xmax = maxXPosition,
     ymax = maxYPosition,
-    astroidHud,
+    asteroidHud,
     gameInterval,
     maxRepeat = -50, // Debugging only
     refreshRate = 30,
@@ -36,7 +36,7 @@ var astroid = function(astroidLogger, astroidContext, maxXPosition, maxYPosition
 
   function start() {
     //run();
-    logger.info("Astroid Game Initialized.");
+    logger.info("Asteroid Game Initialized.");
   };
 
   function run() {

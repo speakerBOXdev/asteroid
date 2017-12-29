@@ -13,7 +13,7 @@ function setup() {
     var maxx = 700;
     var maxy = 400;
 
-    var app = astroid(logger, context, maxx, maxy);
+    var app = asteroid(logger, context, maxx, maxy);
     app.addItem(hud(context, 1, 1, 700));
 
     var x, y, c, r;
