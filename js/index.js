@@ -13,33 +13,25 @@ function setup() {
     var maxx = 700;
     var maxy = 400;
 
-    var app = asteroid(logger, context, maxx, maxy);
-    var hudItem = hud(context, 1, 1, 700);
-    hudItem.setTitle("Asteroid");
+    var app = game(logger, context, maxx, maxy);
+    var hudItem = hud(logger, context, 1, 1, 700);
+    hudItem.setTitle("Asteroid Dodger");
+    hudItem.setHealth("100");
 
     app.addItem(hudItem);
 
-    var x, y, c, r;
+    var xPosition, yPosition, color, radius;
     for (var i = 0; i < 50; i++) {
-      x = Math.floor(Math.random() * maxx + minx);
-      y = Math.floor(Math.random() * (maxy) + miny);
+      xPosition = Math.floor(Math.random() * (maxx + minx)) + 1;
+      yPosition = Math.floor(Math.random() * (maxy + miny)) + 1;
+      radius = Math.floor(Math.random() * 4) + 1;
 
-      r = Math.floor(Math.random() * 4) + 1;
-      switch (r) {
-        case 4:
-          c = "#eeeeee";
-          break;
-        case 3:
-          c = "#cccccc";
-          break;
-        case 2:
-          c = "#aaaaaa";
-          break;
-        default:
-          c = "#888888";
-      }
+      // Apply transparency relative to the size.
+      // This appears to add depth to the image.
+      var transparency = radius / 4;
+      color = `rgba(220, 220, 220, ${transparency})`
 
-      app.addItem(star(context, c, x, y, r));
+      app.addItem(star(context, color, xPosition, yPosition, radius));
     }
     app.run();
   } catch (err) {

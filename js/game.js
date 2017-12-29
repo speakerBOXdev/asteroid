@@ -1,8 +1,8 @@
-var asteroid = function(asteroidLogger, asteroidContext, maxXPosition, maxYPosition, minXPosition, minYPosition) {
-  if (!asteroidLogger)
-    throw "Parameter: 'asteroidLogger' is undefined.";
-  if (!asteroidContext)
-    throw "Parameter: 'asteroidContext' is undefined."
+var game = function(gameLogger, gameContext, maxXPosition, maxYPosition, minXPosition, minYPosition) {
+  if (!gameLogger)
+    throw "Parameter: 'gameLogger' is undefined.";
+  if (!gameContext)
+    throw "Parameter: 'gameContext' is undefined."
   if (!maxXPosition)
     throw "Parameter: 'maxXPosition' is undefined.";
   if (!maxYPosition)
@@ -13,13 +13,13 @@ var asteroid = function(asteroidLogger, asteroidContext, maxXPosition, maxYPosit
   if (!minYPosition)
     minYPosition = 0;
 
-  var logger = asteroidLogger,
-    context = asteroidContext,
+  var logger = gameLogger,
+    context = gameContext,
     xmin = minXPosition,
     ymin = minYPosition,
     xmax = maxXPosition,
     ymax = maxYPosition,
-    asteroidHud,
+    gameHud,
     gameInterval,
     maxRepeat = -50, // Debugging only
     refreshRate = 30,
@@ -32,11 +32,6 @@ var asteroid = function(asteroidLogger, asteroidContext, maxXPosition, maxYPosit
     if (item) {
       items.push(item);
     }
-  };
-
-  function start() {
-    //run();
-    logger.info("Asteroid Game Initialized.");
   };
 
   function run() {
@@ -101,8 +96,6 @@ var asteroid = function(asteroidLogger, asteroidContext, maxXPosition, maxYPosit
       }
     }
   }
-
-  start();
 
   return {
     run: run,

@@ -33,7 +33,7 @@ var star = function(starContext, starColor, starX, starY, starRadius) {
   * @description renders star on context
   */
   function draw() {
-    context.fillColor = color;
+    context.fillStyle = color;
     context.beginPath();
     context.arc(x, y, radius, 0, Math.PI * 2, true);
     context.closePath();
@@ -55,20 +55,20 @@ var star = function(starContext, starColor, starX, starY, starRadius) {
   function getY() {
     return y;
   }
-
-  /**
-   * @name move
-   * @description updates the position of star
-   */
-  function move() {
-    x = x - xspeed;
-    y = y - yspeed;
-  }
+  //
+  // /**
+  //  * @name move
+  //  * @description updates the position of star
+  //  */
+  // function move() {
+  //   x = x - xspeed;
+  //   y = y - yspeed;
+  // }
 
   return {
     draw: draw,
     getX: getX,
     getY: getY,
-    move: move
+    //move: move
   };
 }

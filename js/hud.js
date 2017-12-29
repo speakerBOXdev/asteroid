@@ -1,4 +1,6 @@
-var hud = function(hudContext, minXPosition, minYPosition, hudWidth) {
+var hud = function(hudLogger, hudContext, minXPosition, minYPosition, hudWidth) {
+  if (!hudLogger)
+    throw "Parameter: 'hudLogger' is undefined.";
   if (!hudContext)
     throw "Parameter: 'hudContext' is undefined.";
   if (!minXPosition)
@@ -17,7 +19,10 @@ var hud = function(hudContext, minXPosition, minYPosition, hudWidth) {
     health = 0,
     points = 0,
     title = "",
-    healthBarXPositions = [600, 620, 640, 660, 680];
+    healthBarXPositions = [600, 620, 640, 660, 680],
+    maxHealth = 100,
+    healthDivisor = maxHealth / healthBarXPositions.length,
+    healthValues = [];
 
   var frameBorderColor = "#666666",
     frameBackgroundColor = "#333333",
@@ -35,6 +40,15 @@ var hud = function(hudContext, minXPosition, minYPosition, hudWidth) {
   function setHealth(value) {
     if (value) {
       health = value;
+      healthValues = [];
+
+      var calcHealth = health;
+      for (var x = healthBarXPositions.length; x > 0; x--) {
+        var barValue = calcHealth - (healthDivisor * (x - 1));
+        if (barValue < 0) barValue = 0;
+        healthValues.push(barValue);
+        calcHealth -= barValue;
+      }
     }
   }
 
@@ -51,44 +65,52 @@ var hud = function(hudContext, minXPosition, minYPosition, hudWidth) {
   }
 
   function drawFrame() {
+    // Draw background
     context.fillStyle = frameBackgroundColor;
     context.fillRect(x, y, width, height);
-
+    // Draw border
     context.strokeStyle = frameBorderColor;
     context.strokeRect(x + 1, y, width - 3, height);
   }
 
   function drawHealth() {
+    // Draw text
     context.fillStyle = fontColor;
     context.font = fontStyle;
     context.fillText("Health", 550, height - padding);
 
+    // Draw bars of health
     for (var i = 0; i < healthBarXPositions.length; i++) {
-      drawHealthBar(healthBarXPositions[i], 91);
+      var barValue = health
+      drawHealthBar(healthBarXPositions[i], healthValues[i]);
     }
   };
 
   function drawHealthBar(xPosition, value) {
 
-    var fillStyle = "#333333",
-      strokeStyle = "#666666";
-    if (value > 90) {
-      fillStyle = "#009900";
-      strokeStyle = "#33bb33";
-    } else if (value > 50) {
+    var r = 102,
+        g = 155,
+        b = 74,
+        a = value / maxHealth;
 
-    } else if (value > 0) {
+    var fillStyle = `rgba({r},{g},{b},{a})`,
+      strokeStyle = "#666666";
+
+    if (a < 0.3) {
       fillStyle = "#660000";
       strokeStyle = "#bb3333";
     }
 
+    context.fillStyle = fillStyle;
     context.fillRect(xPosition, 5, 15, 20);
+
+    context.strokeStyle = strokeStyle;
     context.strokeRect(xPosition, 5, 15, 20);
   }
 
   function drawPoints() {
-    context.fillStyle = this.fontColor;
-    context.font = this.fontStyle;
+    context.fillStyle = fontColor;
+    context.font = fontStyle;
     context.fillText("Score: " + points, padding, height - padding);
   }
 
@@ -97,6 +119,8 @@ var hud = function(hudContext, minXPosition, minYPosition, hudWidth) {
     context.font = titleFontStyle;
     context.fillText(title, 250, height - padding);
   };
+
+  setHealth(maxHealth);
 
   return {
     draw: draw,

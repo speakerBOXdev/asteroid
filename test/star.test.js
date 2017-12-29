@@ -75,7 +75,7 @@ QUnit.test("draw", function(assert) {
   undertest = star(context, starColor, starX, starY, starRadius);
   undertest.draw();
 
-  assert.equal(context.fillColor, starColor, "fillColor set");
+  assert.equal(context.fillStyle, starColor, "fillColor set");
   assert.ok(spyContextBeginPath.calledOnce, "beginPath calledOnce");
   assert.ok(spyContextBeginPath.calledBefore(spyContextArc), "beginPath before arg");
   assert.ok(spyContextArc
@@ -85,12 +85,4 @@ QUnit.test("draw", function(assert) {
   assert.ok(spyContextClosePath.calledOnce, "closePath calledOnce");
   assert.ok(spyContextClosePath.calledBefore(spyContextFill), "closePath before fill");
   assert.ok(spyContextFill.calledOnce, "fill calledOnce");
-});
-
-QUnit.test("move", function(assert) {
-
-  undertest = star(context, starColor, starX, starY, starRadius);
-  undertest.move();
-  assert.notOk(undertest.getX() == starX, "x has changed");
-  assert.notOk(undertest.getX() == starX, "y has changed");
 });
