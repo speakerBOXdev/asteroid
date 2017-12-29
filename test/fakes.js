@@ -6,5 +6,6 @@ var fakeContext = {
   closePath: function() {},
   fill: function() {},
   fillRect: function() {},
+  fillText: function() {},
   strokeRect: function() {}
 }
