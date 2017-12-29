@@ -10,7 +10,8 @@ var hud = function(hudLogger, hudContext, minXPosition, minYPosition, hudWidth) 
   if (!hudWidth)
     throw "Parameter: 'hudWidth' is undefined.";
 
-  var context = hudContext,
+  var logger = hudLogger,
+    context = hudContext,
     x = minXPosition,
     y = minYPosition,
     width = hudWidth,
@@ -74,6 +75,7 @@ var hud = function(hudLogger, hudContext, minXPosition, minYPosition, hudWidth) 
   }
 
   function drawHealth() {
+
     // Draw text
     context.fillStyle = fontColor;
     context.font = fontStyle;
@@ -81,25 +83,27 @@ var hud = function(hudLogger, hudContext, minXPosition, minYPosition, hudWidth) 
 
     // Draw bars of health
     for (var i = 0; i < healthBarXPositions.length; i++) {
-      var barValue = health
       drawHealthBar(healthBarXPositions[i], healthValues[i]);
     }
   };
 
   function drawHealthBar(xPosition, value) {
 
-    var r = 102,
-        g = 155,
-        b = 74,
-        a = value / maxHealth;
+    var maxBarValue = maxHealth / healthValues.length;
 
-    var fillStyle = `rgba({r},{g},{b},{a})`,
-      strokeStyle = "#666666";
+    var r = 102,
+      g = 155,
+      b = 74,
+      a = value / maxBarValue; // percentage of max bar health
 
     if (a < 0.3) {
-      fillStyle = "#660000";
-      strokeStyle = "#bb3333";
+      r = 193;
+      g = 53;
+      b = 29;
     }
+
+    var fillStyle = `rgba(${r},${g},${b},${a})`,
+      strokeStyle = "#666666";
 
     context.fillStyle = fillStyle;
     context.fillRect(xPosition, 5, 15, 20);
