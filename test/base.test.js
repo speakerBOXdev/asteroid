@@ -43,3 +43,16 @@ QUnit.test("init no y", function(assert) {
     "Error thrown"
   );
 });
+
+QUnit.test("draw", function(assert) {
+  var spyContextFillRect = sinon.spy(context, "fillRect");
+  var spyContextStrokeRect = sinon.spy(context, "strokeRect");
+
+  undertest = base(context, xPosition, yPosition);
+
+  undertest.draw();
+
+  assert.ok(spyContextFillRect.withArgs(xPosition, yPosition, 100, 100).calledOnce, "fillRect called once");
+  context.fillRect.restore();
+  context.strokeRect.restore();
+})

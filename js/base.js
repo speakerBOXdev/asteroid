@@ -13,16 +13,16 @@ var base = function(baseContext, xPosition, yPosition) {
     height = 100;
 
   /* Styles */
-  var fillColor = "#3333DD",
-    strokeColor = "#5555FF";
+  var fillStyle = "#3333DD",
+    strokeStyle = "#5555FF";
 
-  draw = function(context) {
+  draw = function() {
     context.fillStyle = fillStyle;
     context.fillRect(x, y, width, height);
 
     context.strokeStyle = strokeStyle;
     context.strokeRect(x, y, width, height);
-  }
+  };
 
   return {
     draw: draw
