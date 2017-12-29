@@ -55,6 +55,7 @@ var astroid = function(astroidLogger, astroidContext, maxXPosition, maxYPosition
       try {
         clearInterval(gameInterval);
         gameInterval = undefined;
+        logger.info("Game Paused.");
       } catch (err) {
         logger.warn("Could not pause. " + err.toString());
       }
@@ -84,7 +85,7 @@ var astroid = function(astroidLogger, astroidContext, maxXPosition, maxYPosition
   };
 
   function drawItems() {
-    logger.debug("Draw items");
+    logger.trace("Draw items");
     for (var i =0; i < items.length; i++) {
       if (items[i].draw) {
         items[i].draw();
@@ -93,7 +94,7 @@ var astroid = function(astroidLogger, astroidContext, maxXPosition, maxYPosition
   }
 
   function moveItems() {
-    logger.debug("move items");
+    logger.trace("move items");
     for (var i =0; i < items.length; i++) {
       if (items[i].move) {
         items[i].move();
