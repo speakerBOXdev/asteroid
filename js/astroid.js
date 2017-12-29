@@ -21,7 +21,7 @@ var astroid = function(astroidLogger, astroidContext, maxXPosition, maxYPosition
     ymax = maxYPosition,
     astroidHud,
     gameInterval,
-    maxRepeat = -50,  // Debugging only
+    maxRepeat = -50, // Debugging only
     refreshRate = 30,
     items = [];
 
@@ -86,7 +86,7 @@ var astroid = function(astroidLogger, astroidContext, maxXPosition, maxYPosition
 
   function drawItems() {
     logger.trace("Draw items");
-    for (var i =0; i < items.length; i++) {
+    for (var i = 0; i < items.length; i++) {
       if (items[i].draw) {
         items[i].draw();
       }
@@ -95,7 +95,7 @@ var astroid = function(astroidLogger, astroidContext, maxXPosition, maxYPosition
 
   function moveItems() {
     logger.trace("move items");
-    for (var i =0; i < items.length; i++) {
+    for (var i = 0; i < items.length; i++) {
       if (items[i].move) {
         items[i].move();
       }
