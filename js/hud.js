@@ -9,18 +9,46 @@ var hud = function(hudContext, minXPosition, minYPosition, hudWidth) {
     throw "Parameter: 'hudWidth' is undefined.";
 
   var context = hudContext,
-  x = minXPosition,
-  y = minYPosition,
-  width = hudWidth,
-  height = 30;
+    x = minXPosition,
+    y = minYPosition,
+    width = hudWidth,
+    height = 30,
+    padding = 10,
+    health = 0,
+    points = 0,
+    title = "",
+    healthBarXPositions = [600, 620, 640, 660, 680];
 
   var frameBorderColor = "#666666",
-    frameBackgroundColor = "#333333";
+    frameBackgroundColor = "#333333",
+    fontColor = "#DDDDDD",
+    fontStyle = "14px Arial"
+  titleFontStyle = "18px Arial";
 
   function draw() {
-
     drawFrame();
+    drawTitle();
+    drawHealth();
+    drawPoints();
   };
+
+  function setHealth(value) {
+    if (value) {
+      health = value;
+    }
+  }
+
+  function setPoints(value) {
+    if (value) {
+      points = value;
+    }
+  }
+
+  function setTitle(value) {
+    if (value) {
+      title = value;
+    }
+  }
 
   function drawFrame() {
     context.fillStyle = frameBackgroundColor;
@@ -30,8 +58,51 @@ var hud = function(hudContext, minXPosition, minYPosition, hudWidth) {
     context.strokeRect(x + 1, y, width - 3, height);
   }
 
+  function drawHealth() {
+    context.fillStyle = fontColor;
+    context.font = fontStyle;
+    context.fillText("Health", 550, height - padding);
+
+    for (var i = 0; i < healthBarXPositions.length; i++) {
+      drawHealthBar(healthBarXPositions[i], 91);
+    }
+  };
+
+  function drawHealthBar(xPosition, value) {
+
+    var fillStyle = "#333333",
+      strokeStyle = "#666666";
+    if (value > 90) {
+      fillStyle = "#009900";
+      strokeStyle = "#33bb33";
+    } else if (value > 50) {
+
+    } else if (value > 0) {
+      fillStyle = "#660000";
+      strokeStyle = "#bb3333";
+    }
+
+    context.fillRect(xPosition, 5, 15, 20);
+    context.strokeRect(xPosition, 5, 15, 20);
+  }
+
+  function drawPoints() {
+    context.fillStyle = this.fontColor;
+    context.font = this.fontStyle;
+    context.fillText("Score: " + points, padding, height - padding);
+  }
+
+  function drawTitle() {
+    context.fillStyle = fontColor;
+    context.font = titleFontStyle;
+    context.fillText(title, 250, height - padding);
+  };
+
   return {
-    draw: draw
+    draw: draw,
+    setHealth: setHealth,
+    setPoints: setPoints,
+    setTitle: setTitle,
   };
 }
 
@@ -69,7 +140,6 @@ function headsUpDisplay(x, y, width) {
     this.drawHealth(context);
     this.drawPoints(context);
   }
-
 
   this.drawHealth = function(context) {
 
@@ -150,7 +220,6 @@ function headsUpDisplay(x, y, width) {
 
     context.fillRect(x, 5, 15, 20);
     context.strokeRect(x, 5, 15, 20);
-
   }
 
   this.drawPoints = function(context) {

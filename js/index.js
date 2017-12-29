@@ -14,7 +14,10 @@ function setup() {
     var maxy = 400;
 
     var app = asteroid(logger, context, maxx, maxy);
-    app.addItem(hud(context, 1, 1, 700));
+    var hudItem = hud(context, 1, 1, 700);
+    hudItem.setTitle("Asteroid");
+
+    app.addItem(hudItem);
 
     var x, y, c, r;
     for (var i = 0; i < 50; i++) {
