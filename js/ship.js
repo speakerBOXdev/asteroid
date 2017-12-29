@@ -1,0 +1,6 @@
+var ship = function() {
+
+    return {
+
+    };
+}
