@@ -1,0 +1,90 @@
+body {
+  font-family: Arial;
+  margin: 0;
+  padding: 0px;
+}
+
+canvas {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  height: 400px;
+  width: 700px;
+}
+
+#status {
+  width: 700px;
+  background-color: #555;
+  color: #fff;
+}
+
+.success, .error, .warning, .notice, .log-success, .log-error, .log-warning, .log-notice {
+  font-size: 14px;
+  padding: 6px 12px;
+  margin: 5px;
+}
+
+.error, .log-error {
+  background-color: #ffecec;
+  border: 1px solid #f5aca6;
+}
+
+.success, .log-success {
+  background-color: #e9ffd9;
+  border: 1px solid #a6ca8a;
+}
+
+.warning, .log-warn {
+  background-color: #fff8c4;
+  border: 1px solid #f2c779;
+}
+
+.notice, .log-info {
+  background-color: #e3f7fc;
+  border: 1px solid #8ed9f6;
+}
+
+canvas.tilt {
+  -webkit-animation: tilt 1s;
+  animation: tilt 1s;
+}
+
+@-webkit-keyframes tilt {
+  from {
+    transform: rotate(-2deg);
+  }
+  to {
+    transform: rotate(2deg);
+    scale(2, 2);
+  }
+}
+
+keyframes tilt {
+  from {
+    transform: rotate(-2deg);
+  }
+  to {
+    transform: rotate(2deg);
+    scale(2, 2);
+  }
+}
+
+label {
+  display: inline-block;
+  font-weight: bold;
+  text-align: right;
+  width: 100px;
+}
+
+.row {
+  padding: 5px 0;
+}
+
+.button-row {
+  text-align: right;
+  padding: 10px 90px;
+}
+
+.container {
+  width: 600px;
+}
