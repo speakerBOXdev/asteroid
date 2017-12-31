@@ -1,10 +1,14 @@
 var undertest,
   logger = fakeLog,
   context = fakeContext,
-  xPosition = 1,
-  yPosition = 2,
+  xPosition = 10,
+  yPosition = 20,
   xspeed = 3,
   yspeed = 4,
+  minx = 1,
+  miny = 2,
+  maxx = 101,
+  maxy = 102,
   radius = 5,
   color = '#aaabbb',
   twoxpi = Math.PI * 2,
@@ -109,7 +113,7 @@ QUnit.test("draw", function(assert) {
 QUnit.test("move", function(assert) {
 
   undertest = ship(logger, context, color, xPosition, yPosition, radius);
-
+  undertest.setBounds(minx, miny, maxx, maxy);
   undertest.setSpeed(xspeed, yspeed);
   undertest.move();
 
@@ -117,8 +121,20 @@ QUnit.test("move", function(assert) {
   assert.equal(undertest.getY(), yPosition - yspeed, "y position updated.");
 });
 
+QUnit.test("move no bounds", function(assert) {
+  undertest = ship(logger, context, color, xPosition, yPosition, radius);
+  assert.throws(function() {
+      undertest.move();
+    },
+    function(err) {
+      return err.toString() === "ship.move() called without set bounds."
+    },
+    "Error thrown");
+});
+
 QUnit.test("keyEvent left", function(assert) {
   undertest = ship(logger, context, color, xPosition, yPosition, radius);
+  undertest.setBounds(minx, miny, maxx, maxy);
 
   undertest.handleKeyEvent({
     keyCode: 37
@@ -130,6 +146,7 @@ QUnit.test("keyEvent left", function(assert) {
 
 QUnit.test("keyEvent right", function(assert) {
   undertest = ship(logger, context, color, xPosition, yPosition, radius);
+  undertest.setBounds(minx, miny, maxx, maxy);
 
   undertest.handleKeyEvent({
     keyCode: 39
@@ -141,6 +158,7 @@ QUnit.test("keyEvent right", function(assert) {
 
 QUnit.test("keyEvent up", function(assert) {
   undertest = ship(logger, context, color, xPosition, yPosition, radius);
+  undertest.setBounds(minx, miny, maxx, maxy);
 
   undertest.handleKeyEvent({
     keyCode: 38
@@ -152,6 +170,7 @@ QUnit.test("keyEvent up", function(assert) {
 
 QUnit.test("keyEvent down", function(assert) {
   undertest = ship(logger, context, color, xPosition, yPosition, radius);
+  undertest.setBounds(minx, miny, maxx, maxy);
 
   undertest.handleKeyEvent({
     keyCode: 40
@@ -159,4 +178,49 @@ QUnit.test("keyEvent down", function(assert) {
   undertest.move();
 
   assert.equal(undertest.getY(), yPosition + 1, "y position updated down.");
+});
+
+QUnit.test("prevent exit left", function(assert) {
+  var minx = 5;
+
+  undertest = ship(logger, context, color, minx, yPosition, radius);
+  undertest.setBounds(minx, miny, maxx, maxy);
+  undertest.setSpeed(1, 0);
+
+  undertest.move();
+
+  assert.notOk(undertest.getX() < minx, "x position not less that min");
+});
+
+QUnit.test("prevent exit right", function(assert) {
+  var maxx = 100;
+
+  undertest = ship(logger, context, color, maxx, yPosition, radius);
+  undertest.setBounds(minx, miny, maxx, maxy);
+  undertest.setSpeed(-1, 0);
+
+  undertest.move();
+
+  assert.notOk(undertest.getX() > maxx, "x position not greater that max");
+});
+
+QUnit.test("prevent exit top", function(assert) {
+  undertest = ship(logger, context, color, xPosition, miny, radius);
+  undertest.setBounds(minx, miny, maxx, maxy);
+  undertest.setSpeed(0, -1);
+
+  undertest.move();
+
+  assert.notOk(undertest.getY() < miny, "y position not less that min");
+});
+
+QUnit.test("prevent exit bottom", function(assert) {
+
+  undertest = ship(logger, context, color, xPosition, maxy, radius);
+  undertest.setBounds(minx, miny, maxx, maxy);
+  undertest.setSpeed(0, 1);
+
+  undertest.move();
+
+  assert.notOk(undertest.getY() > maxy, "y position not greater that max");
 });

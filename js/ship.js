@@ -20,7 +20,11 @@ var ship = function(shipLogger, shipContext, shipColor, xPosition, yPosition, sh
     x = xPosition,
     y = yPosition,
     xspeed = 0,
-    yspeed = 0;
+    yspeed = 0,
+    xmin = 0,
+    xmax = 0
+  ymin = 0,
+    ymax = 0;
 
   function draw() {
     context.fillStyle = color;
@@ -65,8 +69,27 @@ var ship = function(shipLogger, shipContext, shipColor, xPosition, yPosition, sh
   }
 
   function move() {
+    if (!xmin || !xmax || !ymin || !ymax)
+      throw 'ship.move() called without set bounds.';
+
+    var oldx = x,
+      oldy = y;
+
     x = x - xspeed;
+    if (x < xmin || x > xmax) {
+      x = oldx;
+    }
+
     y = y - yspeed;
+    if (y < ymin || y > ymax)
+      y = oldy;
+  }
+
+  function setBounds(minX, minY, maxX, maxY) {
+    xmin = minX;
+    ymin = minY;
+    xmax = maxX;
+    ymax = maxY;
   }
 
   function setSpeed(speedX, speedY) {
@@ -83,6 +106,7 @@ var ship = function(shipLogger, shipContext, shipColor, xPosition, yPosition, sh
     getY: getY,
     handleKeyEvent: handleKeyEvent,
     move: move,
+    setBounds: setBounds,
     setSpeed: setSpeed
   };
 }

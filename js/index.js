@@ -8,8 +8,8 @@ function setup() {
   var logger = log(LogLevel.Debug, divStatus);
   try {
 
-    var minx = 0;
-    var miny = 0;
+    var minx = 1;
+    var miny = 1;
     var maxx = 700;
     var maxy = 400;
 
@@ -55,6 +55,7 @@ function setup() {
     app.addItem(baseItem);
 
     var shipItem = ship(logger, context, '#9999ff', 35, 75, 20);
+    shipItem.setBounds(minx, miny, maxx, maxy);
     app.addItem(shipItem);
 
     window.addEventListener('keydown', shipItem.handleKeyEvent, true);
