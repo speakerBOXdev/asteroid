@@ -12,9 +12,9 @@ var asteroid = function(asteroidLogger, asteroidContext, asteroidColor, xPositio
   if (!asteroidRadius)
     throw "Parameter: 'asteroidRadius' is undefined.";
   if (!asteroidSpeedX)
-  throw "Parameter: 'asteroidSpeedX' is undefined.";
+    throw "Parameter: 'asteroidSpeedX' is undefined.";
   if (!asteroidSpeedY)
-  throw "Parameter: 'asteroidSpeedY' is undefined.";
+    throw "Parameter: 'asteroidSpeedY' is undefined.";
 
   var logger = asteroidLogger,
     context = asteroidContext,
@@ -23,7 +23,8 @@ var asteroid = function(asteroidLogger, asteroidContext, asteroidColor, xPositio
     y = yPosition,
     radius = asteroidRadius,
     xspeed = asteroidSpeedX,
-    yspeed = asteroidSpeedY;
+    yspeed = asteroidSpeedY,
+    xmin, ymin, xmax, ymax;
 
   function draw() {
     context.fillStyle = color;
@@ -54,8 +55,27 @@ var asteroid = function(asteroidLogger, asteroidContext, asteroidColor, xPositio
    * @description updates the position of star
    */
   function move() {
+    if (!xmin || !xmax || !ymin || !ymax)
+      throw 'asteroid.move() called without set bounds.';
+
+    var oldx = x,
+      oldy = y;
+
     x = x - xspeed;
+    if (x < xmin || x > xmax) {
+      x = oldx;
+    }
+
     y = y - yspeed;
+    if (y < ymin || y > ymax)
+      y = oldy;
+  }
+
+  function setBounds(minX, minY, maxX, maxY) {
+    xmin = minX;
+    ymin = minY;
+    xmax = maxX;
+    ymax = maxY;
   }
 
   logger.debug(`asteroid created => radius${radius};xspeed${xspeed};yspeed:${yspeed}`);
@@ -64,5 +84,6 @@ var asteroid = function(asteroidLogger, asteroidContext, asteroidColor, xPositio
     getX: getX,
     getY: getY,
     move: move,
+    setBounds: setBounds
   };
 }

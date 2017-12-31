@@ -1,4 +1,3 @@
-
 function setup() {
 
   var canvas = document.getElementById('myCanvas');
@@ -48,7 +47,9 @@ function setup() {
       while (!yspeed) {
         yspeed = Math.random() * 3 - 1;
       }
-      app.addItem(asteroid(logger, context, color, xPosition, yPosition, radius, xspeed, yspeed));
+      var asteroidItem = asteroid(logger, context, color, xPosition, yPosition, radius, xspeed, yspeed);
+      asteroidItem.setBounds(minx, miny, maxx, maxy);
+      app.addItem(asteroidItem);
     }
 
     var baseItem = base(logger, context, 650, 350);

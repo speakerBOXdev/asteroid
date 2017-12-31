@@ -7,6 +7,10 @@ var undertest,
   radius = 100,
   xspeed = 3,
   yspeed = 7,
+  minx = 1,
+  miny = 2,
+  maxx = 101,
+  maxy = 102,
   twoxpi = Math.PI * 2,
   drawAntiClockwise = true;
 
@@ -127,11 +131,57 @@ QUnit.test("draw", function(assert) {
 });
 
 QUnit.test("move", function(assert) {
-
   undertest = asteroid(logger, context, color, xPosition, yPosition, radius, xspeed, yspeed);
-
+  undertest.setBounds(minx, miny, maxx, maxy);
   undertest.move();
 
   assert.equal(undertest.getX(), xPosition - xspeed, "x position changed.")
   assert.equal(undertest.getY(), yPosition - yspeed, "y position changed.")
+});
+
+QUnit.test("move no bounds", function(assert) {
+  undertest = asteroid(logger, context, color, xPosition, yPosition, radius, xspeed, yspeed);
+  assert.throws(function() {
+      undertest.move();
+    },
+    function(err) {
+      return err.toString() === "asteroid.move() called without set bounds."
+    },
+    "Error thrown");
+});
+
+QUnit.test("prevent exit left", function(assert) {
+  undertest = asteroid(logger, context, color, minx, yPosition, radius, xspeed, yspeed);
+  undertest.setBounds(minx, miny, maxx, maxy);
+
+  undertest.move();
+
+  assert.notOk(undertest.getX() < minx, "x position not less that min");
+});
+
+QUnit.test("prevent exit right", function(assert) {
+  undertest = asteroid(logger, context, color, maxx, yPosition, radius, -xspeed, yspeed);
+  undertest.setBounds(minx, miny, maxx, maxy);
+
+  undertest.move();
+
+  assert.notOk(undertest.getX() > maxx, "x position not greater that max");
+});
+
+QUnit.test("prevent exit top", function(assert) {
+  undertest = asteroid(logger, context, color, xPosition, miny, radius, xspeed, yspeed);
+  undertest.setBounds(minx, miny, maxx, maxy);
+
+  undertest.move();
+
+  assert.notOk(undertest.getY() < miny, "y position not less that min");
+});
+
+QUnit.test("prevent exit bottom", function(assert) {
+  undertest = asteroid(logger, context, color, xPosition, maxy, radius, xspeed, -yspeed);
+  undertest.setBounds(minx, miny, maxx, maxy);
+
+  undertest.move();
+
+  assert.notOk(undertest.getY() > maxy, "y position not greater that max");
 });
