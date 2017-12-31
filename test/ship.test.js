@@ -189,7 +189,7 @@ QUnit.test("prevent exit left", function(assert) {
   undertest.move();
 
   assert.notOk(undertest.getX() < minx, "x position not less that min");
-  assert.equal(undertest.getX(), expectedXPosition, "x position set to acceptable position")
+  assert.equal(undertest.getX(), expectedXPosition, "x position set to acceptable position");
 });
 
 QUnit.test("prevent exit right", function(assert) {

@@ -1,16 +1,16 @@
-function setup() {
+function setup(canvasId, logContainerId) {
 
-  var canvas = document.getElementById('myCanvas');
+  var canvas = document.getElementById(canvasId);
   var context = canvas.getContext("2d");
-  var divStatus = document.getElementById("status");
+  var divStatus = document.getElementById(logContainerId);
 
   var logger = log(LogLevel.Debug, divStatus);
   try {
 
     var minx = 1;
-    var miny = 1;
-    var maxx = 700;
-    var maxy = 400;
+    var miny = 32; // account for hud height
+    var maxx = canvas.width;
+    var maxy = canvas.height;
 
     var app = game(logger, context, maxx, maxy);
 
@@ -52,7 +52,7 @@ function setup() {
       app.addItem(asteroidItem);
     }
 
-    var baseItem = base(logger, context, 650, 350);
+    var baseItem = base(logger, context, maxx - 50, maxy - 50);
     app.addItem(baseItem);
 
     var shipItem = ship(logger, context, '#9999ff', 35, 75, 20);
@@ -61,7 +61,7 @@ function setup() {
 
     window.addEventListener('keydown', shipItem.handleKeyEvent, true);
 
-    var hudItem = hud(logger, context, 1, 1, 700);
+    var hudItem = hud(logger, context, 1, 1, maxx);
     hudItem.setTitle("Asteroid Dodger");
     hudItem.setHealth("100");
 
