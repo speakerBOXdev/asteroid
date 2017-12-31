@@ -59,7 +59,9 @@ var ship = function(shipLogger, shipContext, shipColor, xPosition, yPosition, sh
         // Unregistered key code. Do nothing.
         break;
     }
-    setSpeed(newXSpeed, newYSpeed);
+    if (newXSpeed != xspeed || newYSpeed != yspeed) {
+      setSpeed(newXSpeed, newYSpeed);
+    }
   }
 
   function move() {
