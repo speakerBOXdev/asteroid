@@ -72,17 +72,19 @@ var ship = function(shipLogger, shipContext, shipColor, xPosition, yPosition, sh
     if (!xmin || !xmax || !ymin || !ymax)
       throw 'ship.move() called without set bounds.';
 
-    var oldx = x,
-      oldy = y;
-
     x = x - xspeed;
-    if (x < xmin || x > xmax) {
-      x = oldx;
+    if (x < xmin + radius) {
+      x = xmin + radius;
+    } else if (x > xmax - radius) {
+      x = xmax - radius;
     }
 
     y = y - yspeed;
-    if (y < ymin || y > ymax)
-      y = oldy;
+    if (y < ymin + radius) {
+      y = ymin + radius;
+    } else if (y > ymax - radius) {
+      y = ymax - radius;
+    }
   }
 
   function setBounds(minX, minY, maxX, maxY) {

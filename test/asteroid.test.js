@@ -4,7 +4,7 @@ var undertest,
   color = "#FFAABB",
   xPosition = 8,
   yPosition = 9,
-  radius = 100,
+  radius = 12,
   xspeed = 3,
   yspeed = 7,
   minx = 1,
@@ -135,8 +135,8 @@ QUnit.test("move", function(assert) {
   undertest.setBounds(minx, miny, maxx, maxy);
   undertest.move();
 
-  assert.equal(undertest.getX(), xPosition - xspeed, "x position changed.")
-  assert.equal(undertest.getY(), yPosition - yspeed, "y position changed.")
+  assert.equal(undertest.getX(), xPosition - xspeed, "x position changed.");
+  assert.equal(undertest.getY(), yPosition - yspeed, "y position changed.");
 });
 
 QUnit.test("move no bounds", function(assert) {
@@ -151,37 +151,45 @@ QUnit.test("move no bounds", function(assert) {
 });
 
 QUnit.test("prevent exit left", function(assert) {
+  var expectedXPosition = minx + radius;
   undertest = asteroid(logger, context, color, minx, yPosition, radius, xspeed, yspeed);
   undertest.setBounds(minx, miny, maxx, maxy);
 
   undertest.move();
 
   assert.notOk(undertest.getX() < minx, "x position not less that min");
+  assert.equal(undertest.getX(), expectedXPosition, "x position set to acceptable position");
 });
 
 QUnit.test("prevent exit right", function(assert) {
+  var expectedXPosition = maxx - radius;
   undertest = asteroid(logger, context, color, maxx, yPosition, radius, -xspeed, yspeed);
   undertest.setBounds(minx, miny, maxx, maxy);
 
   undertest.move();
 
   assert.notOk(undertest.getX() > maxx, "x position not greater that max");
+  assert.equal(undertest.getX(), expectedXPosition, "x position set to acceptable position");
 });
 
 QUnit.test("prevent exit top", function(assert) {
+  var expectedYPosition = miny + radius;
   undertest = asteroid(logger, context, color, xPosition, miny, radius, xspeed, yspeed);
   undertest.setBounds(minx, miny, maxx, maxy);
 
   undertest.move();
 
   assert.notOk(undertest.getY() < miny, "y position not less that min");
+  assert.equal(undertest.getY(), expectedYPosition, "y position set to acceptable position.");
 });
 
 QUnit.test("prevent exit bottom", function(assert) {
+  var expectedYPosition = maxy - radius;
   undertest = asteroid(logger, context, color, xPosition, maxy, radius, xspeed, -yspeed);
   undertest.setBounds(minx, miny, maxx, maxy);
 
   undertest.move();
 
   assert.notOk(undertest.getY() > maxy, "y position not greater that max");
+  assert.equal(undertest.getY(), expectedYPosition, "y position set to acceptable position.");
 });

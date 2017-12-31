@@ -181,8 +181,7 @@ QUnit.test("keyEvent down", function(assert) {
 });
 
 QUnit.test("prevent exit left", function(assert) {
-  var minx = 5;
-
+  var expectedXPosition = minx + radius;
   undertest = ship(logger, context, color, minx, yPosition, radius);
   undertest.setBounds(minx, miny, maxx, maxy);
   undertest.setSpeed(1, 0);
@@ -190,11 +189,11 @@ QUnit.test("prevent exit left", function(assert) {
   undertest.move();
 
   assert.notOk(undertest.getX() < minx, "x position not less that min");
+  assert.equal(undertest.getX(), expectedXPosition, "x position set to acceptable position")
 });
 
 QUnit.test("prevent exit right", function(assert) {
-  var maxx = 100;
-
+  var expectedXPosition = maxx - radius;
   undertest = ship(logger, context, color, maxx, yPosition, radius);
   undertest.setBounds(minx, miny, maxx, maxy);
   undertest.setSpeed(-1, 0);
@@ -202,9 +201,11 @@ QUnit.test("prevent exit right", function(assert) {
   undertest.move();
 
   assert.notOk(undertest.getX() > maxx, "x position not greater that max");
+  assert.equal(undertest.getX(), expectedXPosition, "x position set to acceptable position");
 });
 
 QUnit.test("prevent exit top", function(assert) {
+  var expectedYPosition = miny + radius;
   undertest = ship(logger, context, color, xPosition, miny, radius);
   undertest.setBounds(minx, miny, maxx, maxy);
   undertest.setSpeed(0, -1);
@@ -212,10 +213,11 @@ QUnit.test("prevent exit top", function(assert) {
   undertest.move();
 
   assert.notOk(undertest.getY() < miny, "y position not less that min");
+  assert.equal(undertest.getY(), expectedYPosition, "y position set to acceptable position.");
 });
 
 QUnit.test("prevent exit bottom", function(assert) {
-
+  var expectedYPosition = maxy - radius;
   undertest = ship(logger, context, color, xPosition, maxy, radius);
   undertest.setBounds(minx, miny, maxx, maxy);
   undertest.setSpeed(0, 1);
@@ -223,4 +225,5 @@ QUnit.test("prevent exit bottom", function(assert) {
   undertest.move();
 
   assert.notOk(undertest.getY() > maxy, "y position not greater that max");
+  assert.equal(undertest.getY(), expectedYPosition, "y position set to acceptable position.");
 });
