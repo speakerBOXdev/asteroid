@@ -116,3 +116,47 @@ QUnit.test("move", function(assert) {
   assert.equal(undertest.getX(), xPosition - xspeed, "x position updated.");
   assert.equal(undertest.getY(), yPosition - yspeed, "y position updated.");
 });
+
+QUnit.test("keyEvent left", function(assert) {
+  undertest = ship(logger, context, color, xPosition, yPosition, radius);
+
+  undertest.handleKeyEvent({
+    keyCode: 37
+  });
+  undertest.move();
+
+  assert.equal(undertest.getX(), xPosition - 1, "x position updated left.");
+});
+
+QUnit.test("keyEvent right", function(assert) {
+  undertest = ship(logger, context, color, xPosition, yPosition, radius);
+
+  undertest.handleKeyEvent({
+    keyCode: 39
+  });
+  undertest.move();
+
+  assert.equal(undertest.getX(), xPosition + 1, "x position updated right.");
+});
+
+QUnit.test("keyEvent up", function(assert) {
+  undertest = ship(logger, context, color, xPosition, yPosition, radius);
+
+  undertest.handleKeyEvent({
+    keyCode: 38
+  });
+  undertest.move();
+
+  assert.equal(undertest.getY(), yPosition - 1, "y position updated up.");
+});
+
+QUnit.test("keyEvent down", function(assert) {
+  undertest = ship(logger, context, color, xPosition, yPosition, radius);
+
+  undertest.handleKeyEvent({
+    keyCode: 40
+  });
+  undertest.move();
+
+  assert.equal(undertest.getY(), yPosition + 1, "y position updated down.");
+});

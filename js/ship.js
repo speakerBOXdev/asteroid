@@ -22,6 +22,15 @@ var ship = function(shipLogger, shipContext, shipColor, xPosition, yPosition, sh
     xspeed = 0,
     yspeed = 0;
 
+  function draw() {
+    context.fillStyle = color;
+    context.beginPath();
+    context.arc(x, y, radius, 0, Math.PI * 2, true);
+    context.closePath();
+    context.fill();
+    logger.trace("ship draw");
+  }
+
   function getX() {
     return x;
   };
@@ -30,13 +39,27 @@ var ship = function(shipLogger, shipContext, shipColor, xPosition, yPosition, sh
     return y;
   }
 
-  function draw() {
-      context.fillStyle = color;
-      context.beginPath();
-      context.arc(x, y, radius, 0, Math.PI * 2, true);
-      context.closePath();
-      context.fill();
-      logger.trace("ship draw");
+  function handleKeyEvent(event) {
+    var newXSpeed = xspeed,
+      newYSpeed = yspeed;
+    switch (event.keyCode) {
+      case 37:
+        newXSpeed += 1;
+        break;
+      case 38:
+        newYSpeed += 1;
+        break;
+      case 39:
+        newXSpeed -= 1;
+        break;
+      case 40:
+        newYSpeed -= 1;
+        break;
+      default:
+        // Unregistered key code. Do nothing.
+        break;
+    }
+    setSpeed(newXSpeed, newYSpeed);
   }
 
   function move() {
@@ -47,6 +70,7 @@ var ship = function(shipLogger, shipContext, shipColor, xPosition, yPosition, sh
   function setSpeed(speedX, speedY) {
     xspeed = speedX;
     yspeed = speedY;
+    logger.debug(`ship speed updated => xspeed:${xspeed};yspeed:${yspeed}`);
   }
 
   logger.debug(`ship created => radius:${radius};x:${x};y:${y}`)
@@ -55,6 +79,7 @@ var ship = function(shipLogger, shipContext, shipColor, xPosition, yPosition, sh
     draw: draw,
     getX: getX,
     getY: getY,
+    handleKeyEvent: handleKeyEvent,
     move: move,
     setSpeed: setSpeed
   };

@@ -1,3 +1,4 @@
+
 function setup() {
 
   var canvas = document.getElementById('myCanvas');
@@ -39,7 +40,8 @@ function setup() {
       var transparency = radius / 4;
       color = `rgba(220, 100, 100, ${transparency})`
 
-      var xspeed=undefined, yspeed=undefined;
+      var xspeed = undefined,
+        yspeed = undefined;
       while (!xspeed) {
         xspeed = Math.random() * 3 - 1;
       }
@@ -54,6 +56,8 @@ function setup() {
 
     var shipItem = ship(logger, context, '#9999ff', 35, 75, 20);
     app.addItem(shipItem);
+
+    window.addEventListener('keydown', shipItem.handleKeyEvent, true);
 
     var hudItem = hud(logger, context, 1, 1, 700);
     hudItem.setTitle("Asteroid Dodger");
