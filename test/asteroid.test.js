@@ -2,14 +2,18 @@ var undertest,
   logger = fakeLog,
   context = fakeContext,
   color = "#FFAABB",
-  xPosition = 10,
-  yPosition = 10,
-  radius = 100;
+  xPosition = 8,
+  yPosition = 9,
+  radius = 100,
+  xspeed = 3,
+  yspeed = 7,
+  twoxpi = Math.PI * 2,
+  drawAntiClockwise = true;
 
 QUnit.module("asteroid");
 
 QUnit.test("init", function(assert) {
-  undertest = asteroid(logger, context, color, xPosition, yPosition, radius);
+  undertest = asteroid(logger, context, color, xPosition, yPosition, radius, xspeed, yspeed);
   assert.ok(undertest, "Object initialized.");
   assert.equal(undertest.getX(), xPosition, "x position set");
   assert.equal(undertest.getY(), yPosition, "y position set");
@@ -75,13 +79,33 @@ QUnit.test("init no radius", function(assert) {
     "Error thrown");
 });
 
+QUnit.test("init no xspeed", function(assert) {
+  assert.throws(function() {
+      undertest = asteroid(logger, context, color, xPosition, yPosition, radius);
+    },
+    function(err) {
+      return err.toString() === "Parameter: 'asteroidSpeedX' is undefined."
+    },
+    "Error thrown");
+});
+
+QUnit.test("init no yspeed", function(assert) {
+  assert.throws(function() {
+      undertest = asteroid(logger, context, color, xPosition, yPosition, radius, xspeed);
+    },
+    function(err) {
+      return err.toString() === "Parameter: 'asteroidSpeedY' is undefined."
+    },
+    "Error thrown");
+});
+
 QUnit.test("draw", function(assert) {
   var spyContextBeginPath = sinon.spy(context, "beginPath");
   var spyContextArc = sinon.spy(context, "arc");
   var spyContextClosePath = sinon.spy(context, "closePath");
   var spyContextFill = sinon.spy(context, "fill");
 
-  undertest = asteroid(logger, context, color, xPosition, yPosition, radius);
+  undertest = asteroid(logger, context, color, xPosition, yPosition, radius, xspeed, yspeed);
 
   undertest.draw();
 
@@ -104,10 +128,10 @@ QUnit.test("draw", function(assert) {
 
 QUnit.test("move", function(assert) {
 
-  undertest = asteroid(logger, context, color, xPosition, yPosition, radius);
+  undertest = asteroid(logger, context, color, xPosition, yPosition, radius, xspeed, yspeed);
 
   undertest.move();
 
-  assert.notEqual(undertest.getX(), xPosition, "x position changed.");
-  assert.notEqual(undertest.getY(), yPosition, "y position changed.");
+  assert.equal(undertest.getX(), xPosition - xspeed, "x position changed.")
+  assert.equal(undertest.getY(), yPosition - yspeed, "y position changed.")
 });

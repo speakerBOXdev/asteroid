@@ -1,4 +1,4 @@
-var asteroid = function(asteroidLogger, asteroidContext, asteroidColor, xPosition, yPosition, asteroidRadius) {
+var asteroid = function(asteroidLogger, asteroidContext, asteroidColor, xPosition, yPosition, asteroidRadius, asteroidSpeedX, asteroidSpeedY) {
   if (!asteroidLogger)
     throw "Parameter: 'asteroidLogger' is undefined.";
   if (!asteroidContext)
@@ -11,6 +11,10 @@ var asteroid = function(asteroidLogger, asteroidContext, asteroidColor, xPositio
     throw "Parameter: 'yPosition' is undefined.";
   if (!asteroidRadius)
     throw "Parameter: 'asteroidRadius' is undefined.";
+  if (!asteroidSpeedX)
+  throw "Parameter: 'asteroidSpeedX' is undefined.";
+  if (!asteroidSpeedY)
+  throw "Parameter: 'asteroidSpeedY' is undefined.";
 
   var logger = asteroidLogger,
     context = asteroidContext,
@@ -18,8 +22,8 @@ var asteroid = function(asteroidLogger, asteroidContext, asteroidColor, xPositio
     x = xPosition,
     y = yPosition,
     radius = asteroidRadius,
-    xspeed = 10,
-    yspeed = 10;
+    xspeed = asteroidSpeedX,
+    yspeed = asteroidSpeedY;
 
   function draw() {
     context.fillStyle = color;

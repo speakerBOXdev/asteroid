@@ -1,6 +1,5 @@
 function setup() {
 
-
   var canvas = document.getElementById('myCanvas');
   var context = canvas.getContext("2d");
   var divStatus = document.getElementById("status");
@@ -27,6 +26,27 @@ function setup() {
       color = `rgba(220, 220, 220, ${transparency})`
 
       app.addItem(star(context, color, xPosition, yPosition, radius));
+    }
+
+    for (var asteroidIndex = 0; asteroidIndex < 5; asteroidIndex++) {
+
+      radius = Math.floor(Math.random() * 10) + 10;
+      xPosition = Math.floor(Math.random() * (maxx - radius)) + (minx + radius) + 1;
+      yPosition = Math.floor(Math.random() * (maxy - radius)) + (miny + radius) + 1;
+
+      // Apply transparency relative to the size.
+      // This appears to add depth to the image.
+      var transparency = radius / 4;
+      color = `rgba(220, 100, 100, ${transparency})`
+
+      var xspeed=undefined, yspeed=undefined;
+      while (!xspeed) {
+        xspeed = Math.random() * 3 - 1;
+      }
+      while (!yspeed) {
+        yspeed = Math.random() * 3 - 1;
+      }
+      app.addItem(asteroid(logger, context, color, xPosition, yPosition, radius, xspeed, yspeed));
     }
 
     var baseItem = base(logger, context, 650, 350);
