@@ -20,7 +20,12 @@ var hud = function(hudLogger, hudContext, minXPosition, minYPosition, hudWidth) 
     health = 0,
     points = 0,
     title = "",
-    healthBarXPositions = [600, 620, 640, 660, 680],
+    titleX,
+    healthTextX,
+    healthTextY,
+    healthBarWidth,
+    healthBarHeight,
+    healthBarXPositions = [],
     maxHealth = 100,
     healthDivisor = maxHealth / healthBarXPositions.length,
     healthValues = [];
@@ -30,6 +35,25 @@ var hud = function(hudLogger, hudContext, minXPosition, minYPosition, hudWidth) 
     fontColor = "#DDDDDD",
     fontStyle = "14px Arial"
   titleFontStyle = "18px Arial";
+
+  function setPositions() {
+
+    healthBarY = 5;
+    healthTextY = height - padding;
+
+    healthBarWidth = 15;
+    healthBarHeight = 20;
+
+    titleX = width / 2 - 100;
+
+    var healthBarCount = 5;
+
+    healthTextX = width - (healthBarCount * healthBarWidth) - 50;
+
+    for (var i = healthBarCount; i > 0; i--) {
+      healthBarXPositions.push(width - (i * healthBarWidth));
+    }
+  }
 
   function draw() {
     drawFrame();
@@ -50,6 +74,7 @@ var hud = function(hudLogger, hudContext, minXPosition, minYPosition, hudWidth) 
         healthValues.push(barValue);
         calcHealth -= barValue;
       }
+      logger.debug("Health set:" + value);
     }
   }
 
@@ -75,11 +100,10 @@ var hud = function(hudLogger, hudContext, minXPosition, minYPosition, hudWidth) 
   }
 
   function drawHealth() {
-
     // Draw text
     context.fillStyle = fontColor;
     context.font = fontStyle;
-    context.fillText("Health", 550, height - padding);
+    context.fillText("Health", healthTextX, healthTextY);
 
     // Draw bars of health
     for (var i = 0; i < healthBarXPositions.length; i++) {
@@ -106,25 +130,26 @@ var hud = function(hudLogger, hudContext, minXPosition, minYPosition, hudWidth) 
       strokeStyle = "#666666";
 
     context.fillStyle = fillStyle;
-    context.fillRect(xPosition, 5, 15, 20);
+    context.fillRect(xPosition, healthBarY, healthBarWidth, healthBarHeight);
 
     context.strokeStyle = strokeStyle;
-    context.strokeRect(xPosition, 5, 15, 20);
+    context.strokeRect(xPosition, healthBarY, healthBarWidth, healthBarHeight);
   }
 
   function drawPoints() {
     context.fillStyle = fontColor;
     context.font = fontStyle;
-    context.fillText("Score: " + points, padding, height - padding);
+    context.fillText("Score: " + points, padding, healthTextY);
   }
 
   function drawTitle() {
     context.fillStyle = fontColor;
     context.font = titleFontStyle;
-    context.fillText(title, 250, height - padding);
+    context.fillText(title, titleX, healthTextY);
   };
 
   setHealth(maxHealth);
+  setPositions();
 
   logger.debug(`hud created => x:${x};y:${y};width:${width}`)
 
@@ -135,128 +160,3 @@ var hud = function(hudLogger, hudContext, minXPosition, minYPosition, hudWidth) 
     setTitle: setTitle,
   };
 }
-
-/******
- * OBJECT headsUpDisplay - area for displaying hitpoints and score
- *
- * Parameters:
- *   x - left position
- *   y - top position
- *	 width - width of area
- *****/
-function headsUpDisplay(x, y, width) {
-
-  this.x = x;
-  this.y = y;
-  this.width = width;
-  this.height = 30;
-
-  this.fontColor = "#dddddd";
-  this.fontStyle = "14px Times";
-  this.padding = 10;
-
-  this.health = 100;
-  this.points = 0;
-
-  this.draw = function(context) {
-
-    // Draw Frame
-    context.strokeStyle = "#666666";
-    context.fillStyle = "#333333";
-    context.fillRect(this.x, this.y, this.width, this.height);
-    context.strokeRect(this.x + 1, this.y, this.width - 3, this.height);
-
-    // Draw Points & Health
-    this.drawHealth(context);
-    this.drawPoints(context);
-  }
-
-  this.drawHealth = function(context) {
-
-    if (this.health <= 0) {
-      // TODO: Draw GAME OVER
-
-      // Health Text
-      context.fillStyle = this.fontColor;
-      context.font = "14px Times";
-      context.fillText("Game Over", 550, this.height - this.padding);
-    } else {
-
-      // Health Text
-      context.fillStyle = "#FFFFFF";
-      context.font = this.fontStyle;
-      context.fillText("Health:", 540, 20);
-
-      context.lineWidth = 2;
-
-      var status1 = "none";
-      var status2 = "none";
-      var status3 = "none";
-      var status4 = "none";
-      var status5 = "none";
-
-      if (this.health < 20) {
-        status1 = "bad";
-      } else if (this.health < 40) {
-        status1 = "good";
-        status2 = "bad";
-      } else if (this.health < 60) {
-        status1 = "good";
-        status2 = "good";
-        status3 = "bad";
-      } else if (this.health < 80) {
-        status1 = "good";
-        status2 = "good";
-        status3 = "good";
-        status4 = "bad";
-      } else if (this.health < 100) {
-        status1 = "good";
-        status2 = "good";
-        status3 = "good";
-        status4 = "good";
-        status5 = "bad";
-      } else {
-        status1 = "good";
-        status2 = "good";
-        status3 = "good";
-        status4 = "good";
-        status5 = "good";
-      }
-
-      this.drawHealthBar(600, status1, context);
-      this.drawHealthBar(620, status2, context);
-      this.drawHealthBar(640, status3, context);
-      this.drawHealthBar(660, status4, context);
-      this.drawHealthBar(680, status5, context);
-    }
-  }
-
-  this.drawHealthBar = function(x, status, context) {
-
-    switch (status) {
-      case "good":
-        context.fillStyle = "#009900";
-        context.strokeStyle = "#33bb33";
-        break;
-      case "bad":
-        context.fillStyle = "#660000";
-        context.strokeStyle = "#bb3333";
-        break;
-      default:
-        context.fillstyle = "#333333";
-        context.strokeStyle = "#666666";
-
-    }
-
-    context.fillRect(x, 5, 15, 20);
-    context.strokeRect(x, 5, 15, 20);
-  }
-
-  this.drawPoints = function(context) {
-
-    context.fillStyle = this.fontColor;
-    context.font = this.fontStyle;
-    context.fillText("Score: " + this.points, this.padding, this.height - this.padding);
-
-  }
-} // END headsUpDisplay */
