@@ -21,7 +21,6 @@ var game = function(gameLogger, gameContext, maxXPosition, maxYPosition, minXPos
     ymin = minYPosition,
     xmax = maxXPosition,
     ymax = maxYPosition,
-    gameHud,
     gameInterval,
     maxRepeat = -50, // Debugging only
     refreshRate = rate,
@@ -67,10 +66,6 @@ var game = function(gameLogger, gameContext, maxXPosition, maxYPosition, minXPos
       drawItems();
 
       moveItems();
-
-      if (!maxRepeat || maxRepeat++ == 0)
-        pause();
-
     } catch (renderError) {
       logger.error("Error during render. " + renderError.toString());
       pause();
@@ -100,9 +95,24 @@ var game = function(gameLogger, gameContext, maxXPosition, maxYPosition, minXPos
     }
   }
 
+  function handleKeyEvent(keyEvent) {
+    switch (keyEvent.keyCode) {
+      case 27:
+        pause();
+        break;
+      case 32:
+        run();
+        break;
+      default:
+        // Unregistered keyCode. Do nothing.
+        break;
+    }
+  }
+
   return {
-    run: run,
+    addItem: addItem,
+    handleKeyEvent: handleKeyEvent,
     pause: pause,
-    addItem: addItem
+    run: run
   };
 }

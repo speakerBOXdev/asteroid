@@ -65,6 +65,8 @@ function setup() {
 
     app.addItem(hudItem);
 
+    window.addEventListener('keydown', app.handleKeyEvent, true);
+
     app.run();
   } catch (err) {
     logger.error("Application error occurred: " + err.toString());

@@ -111,3 +111,49 @@ QUnit.test("run with item no methods", function(assert) {
   assert.equal(spyContextFillRect.withArgs(0, 0, maxX, maxY).callCount, 1, "background fillRect calledOnce");
   context.fillRect.restore();
 });
+
+QUnit.test("key event esc", function(assert) {
+
+  var clock = sinon.useFakeTimers();
+  undertest = game(logger, context, maxX, maxY, 0, 0, refreshRate);
+
+  var mockItem = sinon.mock(fakeGameItem);
+  mockItem.expects("draw").never();
+  mockItem.expects("move").never();
+
+  undertest.addItem(fakeGameItem);
+
+  undertest.run();
+
+  // key event causes game loop to pause
+  undertest.handleKeyEvent({
+    keyCode: 27
+  });
+
+  // Move one cycle
+  clock.tick(refreshRate);
+
+  assert.ok(mockItem.verify(), "mockItem never called");
+});
+
+QUnit.test("key event spacebar", function(assert) {
+
+  var clock = sinon.useFakeTimers();
+  undertest = game(logger, context, maxX, maxY, 0, 0, refreshRate);
+
+  var mockItem = sinon.mock(fakeGameItem);
+  mockItem.expects("draw").once;
+  mockItem.expects("move").once;
+
+  undertest.addItem(fakeGameItem);
+
+  // key event causes game loop to run
+  undertest.handleKeyEvent({
+    keyCode: 32
+  });
+
+  // Move one cycle
+  clock.tick(refreshRate);
+
+  assert.ok(mockItem.verify(), "mockItem called");
+});
