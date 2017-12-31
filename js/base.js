@@ -32,7 +32,7 @@ var base = function(baseLogger, baseContext, xPosition, yPosition, baseWidth, ba
     logger.trace("base draw");
   };
 
-  logger.debug("base created.");
+  logger.debug(`base created => x:${x};y:${y};width:${width};height:${height}`);
 
   return {
     draw: draw

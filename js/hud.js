@@ -126,6 +126,8 @@ var hud = function(hudLogger, hudContext, minXPosition, minYPosition, hudWidth) 
 
   setHealth(maxHealth);
 
+  logger.debug(`hud created => x:${x};y:${y};width:${width}`)
+
   return {
     draw: draw,
     setHealth: setHealth,

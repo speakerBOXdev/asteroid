@@ -58,6 +58,7 @@ var asteroid = function(asteroidLogger, asteroidContext, asteroidColor, xPositio
     y = y - yspeed;
   }
 
+  logger.debug(`asteroid created => radius${radius};xspeed${xspeed};yspeed:${yspeed}`);
   return {
     draw: draw,
     getX: getX,
