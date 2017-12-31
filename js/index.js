@@ -14,11 +14,6 @@ function setup() {
     var maxy = 400;
 
     var app = game(logger, context, maxx, maxy);
-    var hudItem = hud(logger, context, 1, 1, 700);
-    hudItem.setTitle("Asteroid Dodger");
-    hudItem.setHealth("100");
-
-    app.addItem(hudItem);
 
     var xPosition, yPosition, color, radius;
     for (var i = 0; i < 50; i++) {
@@ -33,6 +28,16 @@ function setup() {
 
       app.addItem(star(context, color, xPosition, yPosition, radius));
     }
+
+    var baseItem = base(logger, context, 650, 350);
+    app.addItem(baseItem);
+
+    var hudItem = hud(logger, context, 1, 1, 700);
+    hudItem.setTitle("Asteroid Dodger");
+    hudItem.setHealth("100");
+
+    app.addItem(hudItem);
+
     app.run();
   } catch (err) {
     logger.error("Application error occurred: " + err.toString());

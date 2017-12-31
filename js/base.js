@@ -1,16 +1,23 @@
-var base = function(baseContext, xPosition, yPosition) {
+var base = function(baseLogger, baseContext, xPosition, yPosition, baseWidth, baseHeight) {
+  if (!baseLogger)
+    throw "Parameter: 'baseLogger' is undefined.";
   if (!baseContext)
     throw "Parameter: 'baseContext' is undefined.";
   if (!xPosition)
     throw "Parameter: 'xPosition' is undefined.";
   if (!yPosition)
     throw "Parameter: 'yPosition' is undefined.";
+  if (!baseWidth)
+    baseWidth = 50;
+  if (!baseHeight)
+    baseHeight = 50;
 
-  var context = baseContext,
+  var logger = baseLogger,
+    context = baseContext,
     x = xPosition,
     y = yPosition,
-    width = 100,
-    height = 100;
+    width = baseWidth,
+    height = baseHeight;
 
   /* Styles */
   var fillStyle = "#3333DD",
@@ -22,7 +29,10 @@ var base = function(baseContext, xPosition, yPosition) {
 
     context.strokeStyle = strokeStyle;
     context.strokeRect(x, y, width, height);
+    logger.trace("base draw");
   };
+
+  logger.debug("base created.");
 
   return {
     draw: draw

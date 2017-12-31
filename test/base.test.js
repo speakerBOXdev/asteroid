@@ -1,19 +1,32 @@
-var undertest;
-
-var context = fakeContext,
-  xPosition = 100,
-  yPosition = 100;
+var undertest,
+  logger = fakeLog,
+  context = fakeContext,
+  xPosition = 98,
+  yPosition = 99,
+  width = 100,
+  height = 101;
 
 QUnit.module("base");
 
 QUnit.test("init", function(assert) {
-  undertest = base(context, xPosition, yPosition);
+  undertest = base(logger, context, xPosition, yPosition);
   assert.ok(undertest, "Object initialized.");
+});
+
+QUnit.test("init no logger", function(assert) {
+  assert.throws(function() {
+      undertest = base();
+    },
+    function(err) {
+      return err.toString() === "Parameter: 'baseLogger' is undefined."
+    },
+    "Error thrown"
+  );
 });
 
 QUnit.test("init no context", function(assert) {
   assert.throws(function() {
-      undertest = base();
+      undertest = base(logger);
     },
     function(err) {
       return err.toString() === "Parameter: 'baseContext' is undefined."
@@ -24,7 +37,7 @@ QUnit.test("init no context", function(assert) {
 
 QUnit.test("init no x", function(assert) {
   assert.throws(function() {
-      undertest = base(context);
+      undertest = base(logger, context);
     },
     function(err) {
       return err.toString() === "Parameter: 'xPosition' is undefined."
@@ -35,7 +48,7 @@ QUnit.test("init no x", function(assert) {
 
 QUnit.test("init no y", function(assert) {
   assert.throws(function() {
-      undertest = base(context, xPosition);
+      undertest = base(logger, context, xPosition);
     },
     function(err) {
       return err.toString() === "Parameter: 'yPosition' is undefined."
@@ -48,11 +61,11 @@ QUnit.test("draw", function(assert) {
   var spyContextFillRect = sinon.spy(context, "fillRect");
   var spyContextStrokeRect = sinon.spy(context, "strokeRect");
 
-  undertest = base(context, xPosition, yPosition);
+  undertest = base(logger, context, xPosition, yPosition, width, height);
 
   undertest.draw();
 
-  assert.ok(spyContextFillRect.withArgs(xPosition, yPosition, 100, 100).calledOnce, "fillRect called once");
+  assert.ok(spyContextFillRect.withArgs(xPosition, yPosition, width, height).calledOnce, "fillRect called once");
   context.fillRect.restore();
   context.strokeRect.restore();
 })

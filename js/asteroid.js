@@ -45,7 +45,6 @@ var asteroid = function(asteroidLogger, asteroidContext, asteroidColor, xPositio
     return y;
   }
 
-
   /**
    * @name move
    * @description updates the position of star

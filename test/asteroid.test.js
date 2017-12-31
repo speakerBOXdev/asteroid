@@ -1,8 +1,8 @@
 var undertest,
   logger = fakeLog,
   context = fakeContext,
-  color = "#FFAABB"
-xPosition = 10,
+  color = "#FFAABB",
+  xPosition = 10,
   yPosition = 10,
   radius = 100;
 
@@ -11,6 +11,8 @@ QUnit.module("asteroid");
 QUnit.test("init", function(assert) {
   undertest = asteroid(logger, context, color, xPosition, yPosition, radius);
   assert.ok(undertest, "Object initialized.");
+  assert.equal(undertest.getX(), xPosition, "x position set");
+  assert.equal(undertest.getY(), yPosition, "y position set");
 });
 
 QUnit.test("init no logger", function(assert) {
@@ -102,7 +104,7 @@ QUnit.test("draw", function(assert) {
 
 QUnit.test("move", function(assert) {
 
-    undertest = asteroid(logger, context, color, xPosition, yPosition, radius);
+  undertest = asteroid(logger, context, color, xPosition, yPosition, radius);
 
   undertest.move();
 
