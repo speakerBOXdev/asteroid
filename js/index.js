@@ -52,6 +52,9 @@ function setup() {
     var baseItem = base(logger, context, 650, 350);
     app.addItem(baseItem);
 
+    var shipItem = ship(logger, context, '#9999ff', 35, 75, 20);
+    app.addItem(shipItem);
+
     var hudItem = hud(logger, context, 1, 1, 700);
     hudItem.setTitle("Asteroid Dodger");
     hudItem.setHealth("100");
