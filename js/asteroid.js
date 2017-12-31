@@ -24,6 +24,7 @@ var asteroid = function(asteroidLogger, asteroidContext, asteroidColor, xPositio
     radius = asteroidRadius,
     xspeed = asteroidSpeedX,
     yspeed = asteroidSpeedY,
+    bounceRate = -0.5,
     xmin, ymin, xmax, ymax;
 
   function draw() {
@@ -58,19 +59,28 @@ var asteroid = function(asteroidLogger, asteroidContext, asteroidColor, xPositio
     if (!xmin || !xmax || !ymin || !ymax)
       throw 'asteroid.move() called without set bounds.';
 
+    var newXSpeed = xspeed,
+      newYSpeed = yspeed;
+
     x = x - xspeed;
     if (x < xmin + radius) {
       x = xmin + radius;
+      newXSpeed *= bounceRate;
     } else if (x > xmax - radius) {
       x = xmax - radius;
+      newXSpeed *= bounceRate;
     }
 
     y = y - yspeed;
     if (y < ymin + radius) {
       y = ymin + radius;
+      newYSpeed *= bounceRate;
     } else if (y > ymax - radius) {
       y = ymax - radius;
+      newYSpeed *= bounceRate;
     }
+
+    setSpeed(newXSpeed, newYSpeed);
   }
 
   function setBounds(minX, minY, maxX, maxY) {
@@ -78,6 +88,14 @@ var asteroid = function(asteroidLogger, asteroidContext, asteroidColor, xPositio
     ymin = minY;
     xmax = maxX;
     ymax = maxY;
+  }
+
+  function setSpeed(speedX, speedY) {
+    if (speedX != xspeed || speedY != yspeed) {
+      xspeed = speedX;
+      yspeed = speedY;
+      logger.debug(`asteroid speed updated => xspeed:${xspeed};yspeed:${yspeed}`);
+    }
   }
 
   logger.debug(`asteroid created => radius${radius};xspeed${xspeed};yspeed:${yspeed}`);

@@ -21,6 +21,7 @@ var ship = function(shipLogger, shipContext, shipColor, xPosition, yPosition, sh
     y = yPosition,
     xspeed = 0,
     yspeed = 0,
+    bounceRate = -0.5,
     xmin = 0,
     xmax = 0
   ymin = 0,
@@ -63,28 +64,38 @@ var ship = function(shipLogger, shipContext, shipColor, xPosition, yPosition, sh
         // Unregistered key code. Do nothing.
         break;
     }
-    if (newXSpeed != xspeed || newYSpeed != yspeed) {
-      setSpeed(newXSpeed, newYSpeed);
-    }
+
+    setSpeed(newXSpeed, newYSpeed);
   }
 
   function move() {
     if (!xmin || !xmax || !ymin || !ymax)
       throw 'ship.move() called without set bounds.';
 
+    var newXSpeed = xspeed,
+      newYSpeed = yspeed;
+
     x = x - xspeed;
     if (x < xmin + radius) {
       x = xmin + radius;
+      newXSpeed *= bounceRate;
     } else if (x > xmax - radius) {
       x = xmax - radius;
+      newXSpeed *= bounceRate;
     }
 
     y = y - yspeed;
+    // Check exit up
     if (y < ymin + radius) {
       y = ymin + radius;
+      newYSpeed *= bounceRate;
+    // Check exit down
     } else if (y > ymax - radius) {
       y = ymax - radius;
+      newYSpeed *= bounceRate;
     }
+
+    setSpeed(newXSpeed, newYSpeed);
   }
 
   function setBounds(minX, minY, maxX, maxY) {
@@ -95,9 +106,11 @@ var ship = function(shipLogger, shipContext, shipColor, xPosition, yPosition, sh
   }
 
   function setSpeed(speedX, speedY) {
-    xspeed = speedX;
-    yspeed = speedY;
-    logger.debug(`ship speed updated => xspeed:${xspeed};yspeed:${yspeed}`);
+    if (speedX != xspeed || speedY != yspeed) {
+      xspeed = speedX;
+      yspeed = speedY;
+      logger.debug(`ship speed updated => xspeed:${xspeed};yspeed:${yspeed}`);
+    }
   }
 
   logger.debug(`ship created => radius:${radius};x:${x};y:${y}`)

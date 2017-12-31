@@ -192,6 +192,19 @@ QUnit.test("prevent exit left", function(assert) {
   assert.equal(undertest.getX(), expectedXPosition, "x position set to acceptable position");
 });
 
+QUnit.test("exit left bounce right", function(assert) {
+  var bounceSpeed = 1 * -0.5;
+  var expectedXPosition = minx + radius - bounceSpeed;
+  undertest = ship(logger, context, color, minx, yPosition, radius);
+  undertest.setBounds(minx, miny, maxx, maxy);
+  undertest.setSpeed(1, 0);
+
+  undertest.move();
+  undertest.move();
+
+  assert.equal(undertest.getX(), expectedXPosition, "x position set to acceptable position");
+});
+
 QUnit.test("prevent exit right", function(assert) {
   var expectedXPosition = maxx - radius;
   undertest = ship(logger, context, color, maxx, yPosition, radius);
@@ -201,6 +214,19 @@ QUnit.test("prevent exit right", function(assert) {
   undertest.move();
 
   assert.notOk(undertest.getX() > maxx, "x position not greater that max");
+  assert.equal(undertest.getX(), expectedXPosition, "x position set to acceptable position");
+});
+
+QUnit.test("exit right bounce left", function(assert) {
+  var bounceSpeed = -1 * -0.5;
+  var expectedXPosition = maxx - radius - bounceSpeed;
+  undertest = ship(logger, context, color, maxx, yPosition, radius);
+  undertest.setBounds(minx, miny, maxx, maxy);
+  undertest.setSpeed(-1, 0);
+
+  undertest.move();
+  undertest.move();
+
   assert.equal(undertest.getX(), expectedXPosition, "x position set to acceptable position");
 });
 
@@ -216,14 +242,40 @@ QUnit.test("prevent exit top", function(assert) {
   assert.equal(undertest.getY(), expectedYPosition, "y position set to acceptable position.");
 });
 
-QUnit.test("prevent exit bottom", function(assert) {
-  var expectedYPosition = maxy - radius;
-  undertest = ship(logger, context, color, xPosition, maxy, radius);
+QUnit.test("exit top bounce down", function(assert) {
+  var bounceSpeed = 1 * -0.5;
+  var expectedYPosition = miny + radius - bounceSpeed;
+  undertest = ship(logger, context, color, xPosition, miny, radius);
   undertest.setBounds(minx, miny, maxx, maxy);
   undertest.setSpeed(0, 1);
 
   undertest.move();
+  undertest.move();
+
+  assert.equal(undertest.getY(), expectedYPosition, "y position set to acceptable position.");
+});
+
+QUnit.test("prevent exit bottom", function(assert) {
+  var expectedYPosition = maxy - radius;
+  undertest = ship(logger, context, color, xPosition, maxy, radius);
+  undertest.setBounds(minx, miny, maxx, maxy);
+  undertest.setSpeed(xspeed, yspeed);
+
+  undertest.move();
 
   assert.notOk(undertest.getY() > maxy, "y position not greater that max");
+  assert.equal(undertest.getY(), expectedYPosition, "y position set to acceptable position.");
+});
+
+QUnit.test("exit bottom bounce up", function(assert) {
+  var bounceSpeed = -yspeed * -0.5;
+  var expectedYPosition = maxy - radius - bounceSpeed;
+  undertest = ship(logger, context, color, xPosition, maxy, radius);
+  undertest.setBounds(minx, miny, maxx, maxy);
+  undertest.setSpeed(xspeed, -yspeed);
+
+  undertest.move();
+  undertest.move();
+
   assert.equal(undertest.getY(), expectedYPosition, "y position set to acceptable position.");
 });
